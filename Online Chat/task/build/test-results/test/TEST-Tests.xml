@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Tests" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-28T15:33:44" hostname="HOME-PC" time="0.774">
+  <properties/>
+  <testcase name="start" classname="Tests" time="0.774"/>
+  <system-out><![CDATA[?[1;31m
+Start test 1?[0m
+Server started!
+Client started!
+> You are in my mind!
+You are in my mind!
+?[1;31m
+Start test 2?[0m
+Server started!
+Client started!
+> Fuzzy Buzzy!
+Fuzzy Buzzy!
+> The Batman is here!
+The Batman is here!
+]]></system-out>
+  <system-err><![CDATA[java.lang.InterruptedException: sleep interrupted
+	at java.base/java.lang.Thread.sleep(Native Method)
+	at chat.server.Server.main(Server.java:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.hyperskill.hstest.testing.execution.MainMethodExecutor.invokeMain(MainMethodExecutor.java:172)
+	at org.hyperskill.hstest.testing.execution.MainMethodExecutor.lambda$launch$0(MainMethodExecutor.java:199)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException: sleep interrupted
+	at java.base/java.lang.Thread.sleep(Native Method)
+	at chat.client.Client.main(Client.java:101)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.hyperskill.hstest.testing.execution.MainMethodExecutor.invokeMain(MainMethodExecutor.java:172)
+	at org.hyperskill.hstest.testing.execution.MainMethodExecutor.lambda$launch$0(MainMethodExecutor.java:199)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Exception in thread "Thread-4" org.hyperskill.hstest.dynamic.security.ExitException: Tried to exit with status 0.
+	at org.hyperskill.hstest.dynamic.input.DynamicInputHandler.ejectChar(DynamicInputHandler.java:35)
+	at org.hyperskill.hstest.dynamic.input.InputMock.read(InputMock.java:63)
+	at org.hyperskill.hstest.dynamic.input.InputMock.read(InputMock.java:41)
+	at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:181)
+	at java.base/java.io.Reader.read(Reader.java:189)
+	at java.base/java.util.Scanner.readInput(Scanner.java:882)
+	at java.base/java.util.Scanner.findWithinHorizon(Scanner.java:1796)
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1649)
+	at chat.client.Client.lambda$openConnection$0(Client.java:42)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Exception in thread "Thread-5" org.hyperskill.hstest.dynamic.security.ExitException: Tried to exit with status 0.
+	at org.hyperskill.hstest.dynamic.input.DynamicInputHandler.ejectChar(DynamicInputHandler.java:35)
+	at org.hyperskill.hstest.dynamic.input.InputMock.read(InputMock.java:63)
+	at org.hyperskill.hstest.dynamic.input.InputMock.read(InputMock.java:41)
+	at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:181)
+	at java.base/java.io.Reader.read(Reader.java:189)
+	at java.base/java.util.Scanner.readInput(Scanner.java:882)
+	at java.base/java.util.Scanner.findWithinHorizon(Scanner.java:1796)
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1649)
+	at chat.server.Server.lambda$main$1(Server.java:46)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException: sleep interrupted
+	at java.base/java.lang.Thread.sleep(Native Method)
+	at chat.client.Client.main(Client.java:101)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.hyperskill.hstest.testing.execution.MainMethodExecutor.invokeMain(MainMethodExecutor.java:172)
+	at org.hyperskill.hstest.testing.execution.MainMethodExecutor.lambda$launch$0(MainMethodExecutor.java:199)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Exception in thread "Thread-9" org.hyperskill.hstest.dynamic.security.ExitException: Tried to exit with status 0.
+	at org.hyperskill.hstest.dynamic.input.DynamicInputHandler.ejectChar(DynamicInputHandler.java:35)
+	at org.hyperskill.hstest.dynamic.input.InputMock.read(InputMock.java:63)
+	at org.hyperskill.hstest.dynamic.input.InputMock.read(InputMock.java:41)
+	at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:181)
+	at java.base/java.io.Reader.read(Reader.java:189)
+	at java.base/java.util.Scanner.readInput(Scanner.java:882)
+	at java.base/java.util.Scanner.findWithinHorizon(Scanner.java:1796)
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1649)
+	at chat.client.Client.lambda$openConnection$0(Client.java:42)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+Exception in thread "Thread-8" org.hyperskill.hstest.dynamic.security.ExitException: Tried to exit with status 0.
+	at org.hyperskill.hstest.dynamic.input.DynamicInputHandler.ejectChar(DynamicInputHandler.java:35)
+	at org.hyperskill.hstest.dynamic.input.InputMock.read(InputMock.java:63)
+	at org.hyperskill.hstest.dynamic.input.InputMock.read(InputMock.java:41)
+	at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+	at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+	at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+	at java.base/java.io.InputStreamReader.read(InputStreamReader.java:181)
+	at java.base/java.io.Reader.read(Reader.java:189)
+	at java.base/java.util.Scanner.readInput(Scanner.java:882)
+	at java.base/java.util.Scanner.findWithinHorizon(Scanner.java:1796)
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1649)
+	at chat.server.Server.lambda$main$1(Server.java:46)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+java.lang.InterruptedException: sleep interrupted
+	at java.base/java.lang.Thread.sleep(Native Method)
+	at chat.server.Server.main(Server.java:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.hyperskill.hstest.testing.execution.MainMethodExecutor.invokeMain(MainMethodExecutor.java:172)
+	at org.hyperskill.hstest.testing.execution.MainMethodExecutor.lambda$launch$0(MainMethodExecutor.java:199)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+]]></system-err>
+</testsuite>

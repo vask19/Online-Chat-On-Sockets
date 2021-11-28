@@ -1,0 +1,162 @@
+type: edu
+files:
+- name: test/Tests.java
+  visible: false
+  text: |-
+    import org.hyperskill.hstest.dynamic.input.DynamicTestingMethod;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    import static org.hyperskill.hstest.common.Utils.sleep;
+
+    public class Tests extends StageTest<String> {
+        private final int executePause = 25;
+
+        @DynamicTestingMethod
+        CheckResult test1() {
+            final TestedProgram server1 = new TestedProgram("chat.server");
+            final TestedProgram client1 = new TestedProgram("chat.client");
+            client1.setReturnOutputAfterExecution(false);
+            final String fromClientMsg = "You are in my mind!";
+
+            server1.startInBackground();
+            client1.start();
+            sleep(executePause);
+
+            if (!client1.getOutput().trim().equals("Client started!"))
+                return CheckResult.wrong("Can't get the \"Client started\" message from " +
+                "a client");
+
+            if (!server1.getOutput().trim().equals("Server started!"))
+                return CheckResult.wrong("Can't get the \"Server started!\" message from a " +
+                "server");
+
+            client1.execute(fromClientMsg);
+            sleep(executePause);
+
+            if (!server1.getOutput().trim().equals(fromClientMsg))
+                return CheckResult.wrong("A server showed wrong message");
+
+            return CheckResult.correct();
+        }
+
+        @DynamicTestingMethod
+        CheckResult test2() {
+            final String fromServerMsg1 = "Fuzzy Buzzy!";
+            final String fromServerMsg2 = "The Batman is here!";
+            final TestedProgram server2 = new TestedProgram("chat.server");
+            final TestedProgram client2 = new TestedProgram("chat.client");
+            client2.setReturnOutputAfterExecution(false);
+
+            client2.startInBackground();
+            server2.start();
+            sleep(executePause);
+            client2.getOutput();
+
+            server2.execute(fromServerMsg1);
+            server2.execute(fromServerMsg2);
+            sleep(executePause);
+
+            final String answerFromServer = client2.getOutput().trim();
+
+            if (answerFromServer.equals(fromServerMsg2 + "\n" + fromServerMsg1))
+                return CheckResult.wrong("A client showed messages in wrong order!");
+
+            if (!answerFromServer.equals(fromServerMsg1 + "\n" + fromServerMsg2))
+                return CheckResult.wrong("A client showed wrong message");
+
+
+            return CheckResult.correct();
+        }
+
+    }
+  learner_created: false
+- name: src/chat/test/Test1.java
+  visible: true
+  text: |
+    package chat.test;
+
+    import java.util.Arrays;
+    import java.util.List;
+    import java.util.Scanner;
+
+    public class Test1 {
+        public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+            while (scanner.hasNextLine()){
+                String  line = scanner.nextLine();
+                if (line.contains("sent")){
+                    List<String > lineComponents = Arrays.asList(line.split(" "));
+                    lineComponents.set(1,":");
+                    StringBuilder sb = new StringBuilder();
+                    lineComponents.forEach(str -> {
+                        sb.append(str);
+                        if (lineComponents.indexOf(str) != 0)
+                            sb.append(" ");
+                    });
+                    System.out.println(sb);
+
+                }
+            }
+
+        }
+    }
+  learner_created: true
+- name: src/chat/client/Client.java
+  visible: true
+  text: |
+    package chat.client;
+
+    import java.io.DataInputStream;
+    import java.io.DataOutputStream;
+    import java.io.IOException;
+    import java.net.InetAddress;
+    import java.net.Socket;
+    import java.util.Scanner;
+
+    public class Client {
+        public static void main(String[] args) {
+
+        }
+
+
+        public static void task2(){
+            String address = "127.0.0.1";
+            int port = 23456;
+            try (Socket socket = new Socket(InetAddress.getByName(address), port);
+                    DataInputStream input = new DataInputStream(socket.getInputStream());
+                 DataOutputStream output = new DataOutputStream(socket.getOutputStream());){
+                Scanner scanner = new Scanner(System.in);
+                String line = scanner.nextLine();
+                output.writeUTF(line);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+  learner_created: true
+- name: src/chat/server/Server.java
+  visible: true
+  text: "package chat.server;\n\nimport java.io.DataInputStream;\nimport java.io.DataOutputStream;\n\
+    import java.io.IOException;\nimport java.net.InetAddress;\nimport java.net.ServerSocket;\n\
+    import java.net.Socket;\nimport java.util.Scanner;\n\npublic class Server {\n\
+    \    public static void main(String[] args) {\n        String address = \"127.0.0.1\"\
+    ;\n        int port = 23456;\n        try (ServerSocket server = new ServerSocket(port,\
+    \ 50, InetAddress.getByName(address))){\n            Socket socket = server.accept();\n\
+    \            try (DataInputStream input = new DataInputStream(socket.getInputStream());\n\
+    \                 DataOutputStream output  = new DataOutputStream(socket.getOutputStream());){\n\
+    \                String line = input.readUTF();\n                System.out.println(line);\n\
+    \                Scanner scanner = new Scanner(System.in);\n                String\
+    \ answer = scanner.nextLine();\n                output.writeUTF(answer);\n   \
+    \             \n\n\n        } catch (IOException e) {\n            e.printStackTrace();\n\
+    \        }\n\n\n    } catch (IOException e) {\n            e.printStackTrace();\n\
+    \        }\n\n    }\n}\n"
+  learner_created: true
+feedback_link: https://hyperskill.org/projects/49/stages/266/implement#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sun, 28 Nov 2021 15:33:46 UTC
+record: -1
