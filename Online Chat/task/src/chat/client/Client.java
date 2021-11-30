@@ -1,105 +1,70 @@
 package chat.client;
 
+import javax.xml.crypto.Data;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
-    private final String SERVER_ADDR = "localhost";
-    private final int SERVER_PORT = 8189;
-    Scanner scanner = new Scanner(System.in);
-    private static boolean debugMode = false;
-
-    private String msgString;
-
-    private Socket socket;
-    private DataInputStream in;
-    private DataOutputStream out;
-
-    public Client() {
+    public static void main(String[] args) {
         try {
             System.out.println("Client started!");
-            openConnection();
-        } catch (IOException e) {
-            System.out.println("Нет связи с сервером");
-        }
-    }
 
-    private void openConnection() throws IOException {
-        socket = new Socket(SERVER_ADDR, SERVER_PORT);
-        if (debugMode) {
-            System.out.println("Connected to Server!");
-        }
-        in = new DataInputStream(socket.getInputStream());
-        out = new DataOutputStream(socket.getOutputStream());
+            Socket socket = new Socket("localhost",8189);
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
-        //В этом потоке бесконечно отсылаем если есть что слать в сокет и далее на сервер
-        Thread thread = new Thread(() -> {
-            try {
-                while (true) {
-                    msgString = scanner.nextLine();
-                    if (!msgString.trim().isEmpty()) {
-                        try {
-                            out.writeUTF(msgString);
-                        } catch (IOException e) {
-                            System.out.println("Ошибка отправки . Нет связи\n" + e);
-                            break;
+
+
+            Thread outThread = new Thread(()->{
+                Scanner scanner = new Scanner(System.in);
+                while (scanner.hasNextLine()){
+                    String msg =  scanner.nextLine();
+                    if (!msg.trim().isEmpty()){
+                        if (msg.equals("/exit")){
+                            try {
+                                socket.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            System.exit(0);
                         }
+
+                        try {
+                            out.writeUTF(msg);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 }
-            } catch (Exception e) {
-                closeConnection();
-                e.printStackTrace();
-            }
-        });
-        thread.start();
+            });
+            outThread.start();
 
-        // В этом потоке бесконечно читаем сокет
-        Thread thread1 = new Thread(() -> {
-            try {
-                while (true) {
-                    String broadcast = in.readUTF();
-                    System.out.println(broadcast);
+            Thread inThread = new Thread(()->{
+                while (true){
+                    try {
+                        String msg = in.readUTF();
+                        System.out.println(msg);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        thread1.start();
 
-    }
+            });
+            inThread.start();
 
 
-    //Закрываем все соединения
-    public void closeConnection() {
-        if (debugMode) {
-            System.out.println("Connection closing");
-        }
-        try {
-            in.close();
+
+
+
+
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void main(String[] args) {
-        new Client();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
