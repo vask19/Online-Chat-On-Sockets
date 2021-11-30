@@ -5,62 +5,147 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class Server {
     private static final int PORT = 8189;
-    private static boolean debugMode = false;
+    private volatile static ServerSocket server;
+    private HashMap<ServerHandlerClass,String > clients = new HashMap<>();
+    private volatile List<String > chat = new ArrayList();
 
-    public static void main(String[] args) {
-        try (ServerSocket server = new ServerSocket(PORT)) {
-            System.out.println("Server started!");
-            Socket socket = server.accept();
-            if (debugMode) {
-                System.out.println(socket.getInetAddress().getHostAddress() + " Client connected!");
-            }
-            DataInputStream input = new DataInputStream(socket.getInputStream());
-            DataOutputStream output = new DataOutputStream(socket.getOutputStream());
 
-            //В этом потоке бесконечно слушаем сокет.
-            Thread thread = new Thread(() -> {
-                while (true) {
+    public static void main(String[] args) throws IOException {
+        chat.server.Server server  = new chat.server.Server();
+        server.startServer();
+        server.run();
 
-                    String msg = "";
+
+
+    }
+
+    private  void run(){
+        while (!server.isClosed()){
+            try {
+                Socket socket = server.accept();
+                new Thread(()->{
                     try {
-                        msg = input.readUTF();
-                    } catch (IOException e) {
-                        // Как только клиент отключился - сервер завершит работу
-                        System.exit(0);
-                    }
+                        ServerHandlerClass client = registrationNewClient(socket);
+                        clients.put(client,client.getClientName());
+                        sendStartMessagesForClient(client);
+                        new Thread(()->{
+                            while (!socket.isClosed()){
+                                try {
+                                    String message = client.getInputStream().readUTF();
+                                    chat.add(client.getClientName() + ": " + message);
+                                } catch (IOException e) {
+                                    break;
 
-                    // Печатаем что прочитали от клиента сообщение
-                    System.out.println(msg);
-                }
-            } );
-            thread.start();
+                                }
+                            }
+                        }).start();
+                        new Thread(()->{
+                            int messageCounter = chat.size();
 
-            // В этом потоке реализуем рассылку сообщений с сервера
-            Thread thread1 = new Thread(() -> {
-                while (true) {
-                    Scanner scanner = new Scanner(System.in);
-                    String broadcast = scanner.nextLine();
-                    try {
-                        // Отсылаем сообщение клиенту
-                        output.writeUTF(broadcast);
+                            while (!socket.isClosed()){
+
+                                if (messageCounter<chat.size()){
+                                    try {
+                                        client.getOutputStream().writeUTF(chat.get(messageCounter));
+                                        messageCounter++;
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                        }).start();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }).start();
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+    /*Запрашивает имя клиента создает обработчик для клиента и возвращает его*/
+    private ServerHandlerClass registrationNewClient(Socket socket) throws IOException {
+
+        ServerHandlerClass client = null;
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+        DataInputStream in = new DataInputStream(socket.getInputStream());
+        String clientName = "";
+        out.writeUTF("Server: write your name");
+        while (true){
+            clientName = in.readUTF().trim();
+
+
+            if (clients.containsValue(clientName))
+                out.writeUTF("Server: this name is already taken! Choose another one.");
+            else break;
+        }
+        if (!clientName.equals(""))
+            client = new ServerHandlerClass(socket,in,out,clientName);
+
+
+
+        return client;
+
+    }
+    private void sendStartMessagesForClient(ServerHandlerClass client){
+        if (chat.size() < 10){
+            for (String message : chat){
+                try {
+                    client.getOutputStream().writeUTF(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
-            thread1.start();
+            }
+        }
+        else {
+            int firstIndex = chat.size() - 10;
+            for (int i = firstIndex;i<chat.size();i++) {
+                try {
+                    client.getOutputStream().writeUTF(chat.get(i));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+
+    public  void startServer(){
+        try {
+            server = new ServerSocket(PORT);
+            server.setSoTimeout(7000);
+            System.out.println("Server started!");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
+
+
 }
